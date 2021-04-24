@@ -1,26 +1,35 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <h1 class="text-center">Calculate your credit card costs and predict further money spends.</h1>
+      </div>
+      <div class="col-md-8 offset-md-2">
+        <debt-card class="mt-5"></debt-card>
+      </div>
+    </div>
+  </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script lang="ts">
+import { defineComponent } from 'vue'
+import DebtCard from './components/DebtCard.vue'
 
-export default {
-  name: 'App',
+export default defineComponent({
   components: {
-    HelloWorld
+    DebtCard
   }
-}
+})
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  font-size: 10px;
+  padding-top: 6em;
 }
 </style>
