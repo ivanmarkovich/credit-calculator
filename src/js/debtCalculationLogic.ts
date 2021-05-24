@@ -1,6 +1,6 @@
 import { PaymentCycleData } from '@/types/PaymentCycleData';
 
-function paymentCycle(totalDebt:number, monthlyPayment:number, bankPercentage: number): PaymentCycleData|null {
+function paymentCycle(totalDebt: number, monthlyPayment: number, bankPercentage: number): PaymentCycleData | null {
   if (totalDebt <= 0) {
     return null;
   }
@@ -46,14 +46,14 @@ export const debtCalculationLogic = {
   calcBankPercentage(totalDebt: number, monthlyPayment: number, bankInterest: number): number {
     return 12 * bankInterest / totalDebt * 100
   },
-  calcPaymentCycleData(totalDebt:number, monthlyPayment:number, bankPercentage: number): PaymentCycleData {
+  calcPaymentCycleData(totalDebt: number, monthlyPayment: number, bankPercentage: number): PaymentCycleData {
     const data = paymentCycle(totalDebt, monthlyPayment, bankPercentage);
     if (!data) {
       return this.buildEmptyPaymentCycleData();
     }
     return data;
   },
-  calcYearBankInterest(totalDebt:number, monthlyPayment:number, bankPercentage: number): number {
+  calcYearBankInterest(totalDebt: number, monthlyPayment: number, bankPercentage: number): number {
     let dynamicDebt = totalDebt;
     let monthlyInterest = 0;
     let yearInterest = 0;
@@ -65,7 +65,7 @@ export const debtCalculationLogic = {
     }
     return Math.ceil(yearInterest);
   },
-  calcCloseTime(totalDebt: number, monthlyPayment:number, bankPercentage: number): number {
+  calcCloseTime(totalDebt: number, monthlyPayment: number, bankPercentage: number): number {
     if (monthlyPayment <= 0) {
       return 0;
     }
@@ -79,5 +79,24 @@ export const debtCalculationLogic = {
       monthsCount++;
     }
     return monthsCount;
+  },
+  buildPayments(totalDebt: number, monthlyPayment: number, bankPercentage: number): Array<object> {
+    let dynamicDebt = totalDebt;
+
+    const result = [];
+    while (dynamicDebt > 0) {
+      const monthlyBankPercent = dynamicDebt * (bankPercentage / 100) / 12;
+      dynamicDebt = dynamicDebt - monthlyPayment + monthlyBankPercent;
+
+      const payment = {
+        totalDebt: dynamicDebt,
+        bankPercent: monthlyBankPercent,
+        payment: monthlyPayment
+      }
+
+      result.push(payment);
+    }
+
+    return result;
   }
 }
